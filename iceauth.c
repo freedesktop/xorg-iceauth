@@ -29,6 +29,7 @@ in this Software without prior written authorization from The Open Group.
  * Original Author of "xauth" : Jim Fulton, MIT X Consortium
  * Modified into "iceauth"    : Ralph Mor, X Consortium
  */
+/* $XFree86: xc/programs/iceauth/iceauth.c,v 1.5 2001/12/14 20:00:48 dawes Exp $ */
 
 #include "iceauth.h"
 
@@ -50,10 +51,11 @@ static char *defcmds[] = { "source", "-", NULL };  /* default command */
 static int ndefcmds = 2;
 static char *defsource = "(stdin)";
 
+
 /*
  * utility routines
  */
-static void usage ()
+static void usage (void)
 {
     static char *prefixmsg[] = {
 "",
@@ -79,7 +81,7 @@ NULL };
     for (msg = prefixmsg; *msg; msg++) {
 	fprintf (stderr, "%s\n", *msg);
     }
-    print_help (stderr, NULL, "    ");	/* match prefix indentation */
+    print_help (stderr, "    ");	/* match prefix indentation */
     fprintf (stderr, "\n");
     for (msg = suffixmsg; *msg; msg++) {
 	fprintf (stderr, "%s\n", *msg);
@@ -91,9 +93,8 @@ NULL };
 /*
  * The main routine - parses command line and calls action procedures
  */
-main (argc, argv)
-    int argc;
-    char *argv[];
+int
+main (int argc, char *argv[])
 {
     int i;
     char *sourcename = defsource;

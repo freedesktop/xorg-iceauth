@@ -27,6 +27,8 @@ in this Software without prior written authorization from The Open Group.
  * Author:  Jim Fulton, MIT X Consortium
  */
 
+/* $XFree86: xc/programs/iceauth/iceauth.h,v 3.5 2001/12/14 20:00:48 dawes Exp $ */
+
 #include <stdio.h>
 #include <X11/Xos.h>
 #include <X11/ICE/ICElib.h>
@@ -41,9 +43,13 @@ typedef int Bool;
 
 extern char *ProgramName;
 
-extern char *malloc(), *realloc();
-int process_command(), auth_initialize(), auth_finalize();
-extern int print_help();
+#include <stdlib.h>
+
+extern int auth_initialize ( char *authfilename );
+extern int auth_finalize ( void );
+extern int process_command ( char *inputfilename, int lineno, int argc, char **argv );
+extern int print_help ( FILE *fp, char *cmd );
+
 extern int verbose;
 extern Bool ignore_locks;
 extern Bool break_locks;
