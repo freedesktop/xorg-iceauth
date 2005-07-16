@@ -1,6 +1,6 @@
 /*
  * $Xorg: process.c,v 1.5 2001/02/09 02:05:31 xorgcvs Exp $
- *
+ * $XdotOrg: $
  * 
 Copyright 1989, 1998  The Open Group
 
@@ -490,7 +490,7 @@ static Bool iceauth_existed = False;	/* if was present at initialize */
 static Bool iceauth_modified = False;	/* if added, removed, or merged */
 static Bool iceauth_allowed = True;	/* if allowed to write auth file */
 static char *iceauth_filename = NULL;
-static Bool dieing = False;
+static volatile Bool dieing = False;
 
 #ifdef SIGNALRETURNSINT
 #define _signal_t int
