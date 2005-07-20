@@ -21,8 +21,8 @@
 
 bin_PROGRAMS = iceauth
 
-iceauth_CFLAGS = $(DEP_CFLAGS)
-iceauth_LDADD = $(DEP_LIBS)
+iceauth_CFLAGS = $(ICEAUTH_CFLAGS)
+iceauth_LDADD = $(ICEAUTH_LIBS)
 
 iceauth_SOURCES =	\
         iceauth.c \
