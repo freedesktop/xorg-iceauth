@@ -492,11 +492,15 @@ static Bool iceauth_allowed = True;	/* if allowed to write auth file */
 static char *iceauth_filename = NULL;
 static volatile Bool dieing = False;
 
+#ifdef RETSIGTYPE /* autoconf AC_TYPE_SIGNAL */
+# define _signal_t RETSIGTYPE
+#else /* Imake */
 #ifdef SIGNALRETURNSINT
 #define _signal_t int
 #else
 #define _signal_t void
 #endif
+#endif /* RETSIGTYPE */
 
 /* poor man's puts(), for under signal handlers */
 #define WRITES(fd, S) (void)write((fd), (S), strlen((S)))
