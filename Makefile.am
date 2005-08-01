@@ -29,6 +29,6 @@ iceauth_SOURCES =	\
         iceauth.h \
         process.c
 
-dist_man_MANS = \
+dist_man1_MANS = \
         iceauth.man
 
