@@ -1,3 +1,8 @@
+2005-11-20  Alan Coopersmith  <alan.coopersmith@sun.com>
+
+	* configure.ac: 
+	iceauth only depends on xproto headers, not x11 library
+
 2005-10-18  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* configure.ac:
