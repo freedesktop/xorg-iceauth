@@ -1447,14 +1447,14 @@ cant_add:
     {
 	if (auth->protocol_name)
 	    free (auth->protocol_name);
-	if (auth->protocol_data)
-	    free (auth->protocol_data);
+	/* auth->protocol_data already freed,
+	   since it's the same as protodata */
 	if (auth->network_id)
 	    free (auth->network_id);
 	if (auth->auth_name)
 	    free (auth->auth_name);
-	if (auth->auth_data)
-	    free (auth->auth_data);
+	/* auth->auth_data already freed,
+	   since it's the same as authdata */
 	free ((char *) auth);
     }
 
