@@ -83,7 +83,6 @@ static char *stdout_filename = "(stdout)";  /* for messages */
 static char *Yes = "yes";		/* for messages */
 static char *No = "no";			/* for messages */
 
-static char *copystring ( char *src );
 static int binaryEqual ( char *a, char *b, unsigned len );
 static void prefix ( char *fn, int n );
 static void badcommandline ( char *cmd );
@@ -230,18 +229,7 @@ static int original_umask = 0;		/* for restoring */
  * private utility procedures
  */
 
-static char *copystring (src)
-    char *src;
-{
-    int len = strlen (src);
-    char *cp;
-
-    if (!src) return NULL;
-    cp = malloc (len + 1);
-    if (cp)
-	strcpy (cp, src);
-    return cp;
-}
+#define copystring(s)	( s != NULL ? strdup(s) : NULL )
 
 static int
 binaryEqual (a, b, len)
