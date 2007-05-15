@@ -1295,7 +1295,7 @@ static int do_add (inputfilename, lineno, argc, argv)
     char *netid;
     char *authname;
     char *authdata_hex;
-    char *authdata;
+    char *authdata = NULL;
     int protodata_len, authdata_len;
     IceAuthFileEntry *auth = NULL;
     AuthList *list;
