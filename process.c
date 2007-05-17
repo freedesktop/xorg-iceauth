@@ -96,7 +96,7 @@ static int dispatch_command ( char *inputfilename, int lineno, int argc, char **
 static void die ( int sig );
 static void catchsig ( int sig );
 static void register_signals ( void );
-static int write_auth_file ( char *tmp_nam );
+static int write_auth_file ( char *tmp_nam, size_t tmp_nam_len );
 static void fprintfhex ( FILE *fp, unsigned int len, char *cp );
 static int dump_entry ( char *inputfilename, int lineno, IceAuthFileEntry *auth, char *data );
 static int extract_entry ( char *inputfilename, int lineno, IceAuthFileEntry *auth, char *data );
@@ -222,7 +222,7 @@ static char *hex_table[] = {		/* for printing hex digits */
 
 static unsigned int hexvalues[256];	/* for parsing hex input */
 
-static int original_umask = 0;		/* for restoring */
+static mode_t original_umask = 0;	/* for restoring */
 
 
 /*
@@ -644,12 +644,17 @@ int auth_initialize (authfilename)
     return 0;
 }
 
-static int write_auth_file (tmp_nam)
-    char *tmp_nam;
+static int write_auth_file (char *tmp_nam, size_t tmp_nam_len)
 {
     FILE *fp;
     AuthList *list;
 
+    if ((strlen(iceauth_filename) + 3) > tmp_nam_len) {
+	strncpy(tmp_nam, "filename too long", tmp_nam_len);
+	tmp_nam[tmp_nam_len - 1] = '\0';
+	return -1;
+    }
+    
     strcpy (tmp_nam, iceauth_filename);
     strcat (tmp_nam, "-n");		/* for new */
     (void) unlink (tmp_nam);
@@ -700,7 +705,7 @@ int auth_finalize ()
 			"Writing", iceauth_filename);
 	    }
 	    temp_name[0] = '\0';
-	    if (write_auth_file (temp_name) == -1) {
+	    if (write_auth_file (temp_name, sizeof(temp_name)) == -1) {
 		fprintf (stderr,
 			 "%s:  unable to write authority file %s\n",
 			 ProgramName, temp_name);
