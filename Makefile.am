@@ -72,3 +72,10 @@ SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
 	sed $(MAN_SUBSTS) < $< > $@
+
+if LINT
+ALL_LINT_FLAGS=$(LINT_FLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+                $(AM_CPPFLAGS) $(CPPFLAGS) $(iceauth_CFLAGS)
+lint:
+	$(LINT) $(ALL_LINT_FLAGS) $(iceauth_SOURCES)
+endif LINT
