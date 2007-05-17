@@ -80,8 +80,8 @@ struct _list_data {			/* for iterating */
  */
 static char *stdin_filename = "(stdin)";  /* for messages */
 static char *stdout_filename = "(stdout)";  /* for messages */
-static char *Yes = "yes";		/* for messages */
-static char *No = "no";			/* for messages */
+static const char *Yes = "yes";		/* for messages */
+static const char *No = "no";			/* for messages */
 
 static int binaryEqual ( const char *a, const char *b, unsigned len );
 static void prefix ( const char *fn, int n );
@@ -92,7 +92,7 @@ static char **split_into_words ( char *src, int *argcp );
 static FILE *open_file ( char **filenamep, const char *mode, Bool *usedstdp, const char *srcfn, int srcln, const char *cmd );
 static int read_auth_entries ( FILE *fp, AuthList **headp, AuthList **tailp );
 static int cvthexkey ( char *hexstr, char **ptrp );
-static int dispatch_command ( const char *inputfilename, int lineno, int argc, char **argv, CommandTable *tab, int *statusp );
+static int dispatch_command ( const char *inputfilename, int lineno, int argc, char **argv, const CommandTable *tab, int *statusp );
 static void die ( int sig );
 static void catchsig ( int sig );
 static void register_signals ( void );
@@ -116,7 +116,7 @@ static int do_exit ( const char *inputfilename, int lineno, int argc, char **arg
 static int do_quit ( const char *inputfilename, int lineno, int argc, char **argv );
 static int do_source ( const char *inputfilename, int lineno, int argc, char **argv );
 
-static CommandTable command_table[] = {	/* table of known commands */
+static const CommandTable command_table[] = {	/* table of known commands */
 { "add", 2, 3, do_add,
 "\
 add       add an entry\n\
@@ -185,7 +185,7 @@ source    read commands from file\n\
 
 static Bool okay_to_use_stdin = True;	/* set to false after using */
 
-static char *hex_table[] = {		/* for printing hex digits */
+static const char * const hex_table[] = {	/* for printing hex digits */
     "00", "01", "02", "03", "04", "05", "06", "07", 
     "08", "09", "0a", "0b", "0c", "0d", "0e", "0f", 
     "10", "11", "12", "13", "14", "15", "16", "17", 
@@ -443,10 +443,10 @@ static int dispatch_command (
     int lineno,
     int argc,
     char **argv,
-    CommandTable *tab,
+    const CommandTable *tab,
     int *statusp)
 {
-    CommandTable *ct;
+    const CommandTable *ct;
     char *cmd;
     int n;
 					/* scan table for command */
@@ -756,7 +756,7 @@ static void fprintfhex (
     const unsigned char *ucp = (const unsigned char *) cp;
 
     for (; len > 0; len--, ucp++) {
-	register char *s = hex_table[*ucp];
+	register const char *s = hex_table[*ucp];
 	putc (s[0], fp);
 	putc (s[1], fp);
     }
@@ -1032,7 +1032,7 @@ int print_help (
     FILE *fp,
     const char *cmd)
 {
-    CommandTable *ct;
+    const CommandTable *ct;
     int n = 0;
 
     fprintf (fp, "\n");
@@ -1094,7 +1094,7 @@ static int do_questionmark (
     int argc,
     char **argv)
 {
-    CommandTable *ct;
+    const CommandTable *ct;
     int i;
 #define WIDEST_COLUMN 72
     int col = WIDEST_COLUMN;
