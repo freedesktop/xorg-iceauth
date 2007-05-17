@@ -575,6 +575,8 @@ int auth_initialize (authfilename)
 		authfilename);
     }
 
+    iceauth_filename = strdup(authfilename);
+    
     if (ignore_locks) {
 	if (break_locks) IceUnlockAuthFile (authfilename);
     } else {
@@ -633,9 +635,6 @@ int auth_initialize (authfilename)
 	iceauth_head = head;
     }
 
-    n = strlen (authfilename);
-    iceauth_filename = malloc (n + 1);
-    if (iceauth_filename) strcpy (iceauth_filename, authfilename);
     iceauth_modified = False;
 
     if (verbose) {
@@ -723,7 +722,7 @@ int auth_finalize ()
 	}
     }
 
-    if (!ignore_locks) {
+    if (!ignore_locks && (iceauth_filename != NULL)) {
 	IceUnlockAuthFile (iceauth_filename);
     }
     (void) umask (original_umask);
