@@ -45,7 +45,7 @@ typedef int Bool;
 #define True 1
 #endif
 
-extern char *ProgramName;
+extern const char *ProgramName;
 
 #include <stdlib.h>
 
