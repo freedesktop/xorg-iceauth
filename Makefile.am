@@ -21,7 +21,7 @@
 
 bin_PROGRAMS = iceauth
 
-iceauth_CFLAGS = $(ICEAUTH_CFLAGS)
+AM_CFLAGS = $(ICEAUTH_CFLAGS)
 iceauth_LDADD = $(ICEAUTH_LIBS)
 
 iceauth_SOURCES =	\
@@ -75,7 +75,7 @@ SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 if LINT
 ALL_LINT_FLAGS=$(LINT_FLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-                $(AM_CPPFLAGS) $(CPPFLAGS) $(iceauth_CFLAGS)
+                $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS)
 lint:
 	$(LINT) $(ALL_LINT_FLAGS) $(iceauth_SOURCES)
 endif LINT
