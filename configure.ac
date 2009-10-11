@@ -28,25 +28,23 @@ AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)
 
-# Require xorg-macros: XORG_WITH_LINT, XORG_CWARNFLAGS, XORG_CHANGELOG
-m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.2)
+# Require xorg-macros 1.3 or later: XORG_DEFAULT_OPTIONS
+m4_ifndef([XORG_MACROS_VERSION],
+	  [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.3)
 
 AC_PROG_CC
 AC_PROG_INSTALL
 
 AC_TYPE_SIGNAL
-XORG_CWARNFLAGS
+
+XORG_DEFAULT_OPTIONS
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(ICEAUTH, xproto ice)
-ICEAUTH_CFLAGS="$CWARNFLAGS $ICEAUTH_CFLAGS"
 AC_SUBST(ICEAUTH_CFLAGS)
 AC_SUBST(ICEAUTH_LIBS)
 
 XORG_WITH_LINT
-XORG_MANPAGE_SECTIONS
-XORG_RELEASE_VERSION
-XORG_CHANGELOG
 
 AC_OUTPUT([Makefile])

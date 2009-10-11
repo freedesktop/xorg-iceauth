@@ -21,7 +21,7 @@
 
 bin_PROGRAMS = iceauth
 
-AM_CFLAGS = $(ICEAUTH_CFLAGS)
+AM_CFLAGS = $(CWARNFLAGS) $(ICEAUTH_CFLAGS)
 iceauth_LDADD = $(ICEAUTH_LIBS)
 
 iceauth_SOURCES =	\
@@ -71,7 +71,7 @@ MAN_SUBSTS = \
 SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
-	sed $(MAN_SUBSTS) < $< > $@
+	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
 
 if LINT
 ALL_LINT_FLAGS=$(LINT_FLAGS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
