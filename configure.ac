@@ -34,7 +34,6 @@ m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.8)
 
-AC_PROG_CC
 
 AC_TYPE_SIGNAL
 
