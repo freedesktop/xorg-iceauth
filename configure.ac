@@ -44,4 +44,7 @@ PKG_CHECK_MODULES(ICEAUTH, xproto ice)
 
 XORG_WITH_LINT
 
-AC_OUTPUT([Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	man/Makefile])
+AC_OUTPUT
