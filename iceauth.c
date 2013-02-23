@@ -52,7 +52,8 @@ static const char *defsource = "(stdin)";
 /*
  * utility routines
  */
-static void usage (void)
+static void _X_NORETURN
+usage (void)
 {
     static const char prefixmsg[] = 
 "\n"

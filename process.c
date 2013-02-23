@@ -89,8 +89,8 @@ static FILE *open_file ( char **filenamep, const char *mode, Bool *usedstdp, con
 static int read_auth_entries ( FILE *fp, AuthList **headp, AuthList **tailp );
 static int cvthexkey ( char *hexstr, char **ptrp );
 static int dispatch_command ( const char *inputfilename, int lineno, int argc, char **argv, const CommandTable *tab, int *statusp );
-static void die ( int sig );
-static void catchsig ( int sig );
+static void die ( int sig ) _X_NORETURN;
+static void catchsig ( int sig ) _X_NORETURN;
 static void register_signals ( void );
 static int write_auth_file ( char *tmp_nam, size_t tmp_nam_len );
 static void fprintfhex ( FILE *fp, unsigned int len, const char *cp );
