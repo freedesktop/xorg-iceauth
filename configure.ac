@@ -33,10 +33,6 @@ AC_CONFIG_HEADERS([config.h])
 m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
 XORG_MACROS_VERSION(1.8)
-
-
-AC_TYPE_SIGNAL
-
 XORG_DEFAULT_OPTIONS
 
 # Checks for pkg-config packages
