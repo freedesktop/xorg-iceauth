@@ -473,7 +473,7 @@ static volatile Bool dieing = False;
 #define WRITES(fd, S) (void)write((fd), (S), strlen((S)))
 
 /* ARGSUSED */
-static void die (int sig)
+static void die (_X_UNUSED int sig)
 {
     dieing = True;
     _exit (auth_finalize ());
@@ -746,8 +746,8 @@ static void fprintfhex (
 
 /* ARGSUSED */
 static int dump_entry (
-    const char *inputfilename,
-    int lineno,
+    const char *inputfilename _X_UNUSED,
+    int lineno _X_UNUSED,
     IceAuthFileEntry *auth,
     char *data)
 {
@@ -980,8 +980,8 @@ static int search_and_do (
 
 /* ARGSUSED */
 static int remove_entry (
-    const char *inputfilename,
-    int lineno,
+    const char *inputfilename _X_UNUSED,
+    int lineno _X_UNUSED,
     IceAuthFileEntry *auth,
     char *data)
 {
@@ -1070,10 +1070,10 @@ static int do_help (
  */
 /* ARGSUSED */
 static int do_questionmark (
-    const char *inputfilename,
-    int lineno,
-    int argc,
-    char **argv)
+    const char *inputfilename _X_UNUSED,
+    int lineno _X_UNUSED,
+    int argc _X_UNUSED,
+    char **argv _X_UNUSED)
 {
     const CommandTable *ct;
     unsigned int i;
@@ -1487,10 +1487,10 @@ static Bool alldone = False;
 
 /* ARGSUSED */
 static int do_exit (
-    const char *inputfilename,
-    int lineno,
-    int argc,
-    char **argv)
+    const char *inputfilename _X_UNUSED,
+    int lineno _X_UNUSED,
+    int argc _X_UNUSED,
+    char **argv _X_UNUSED)
 {
     /* allow bogus stuff */
     alldone = True;
@@ -1502,10 +1502,10 @@ static int do_exit (
  */
 /* ARGSUSED */
 static int do_quit (
-    const char *inputfilename,
-    int lineno,
-    int argc,
-    char **argv)
+    const char *inputfilename _X_UNUSED,
+    int lineno _X_UNUSED,
+    int argc _X_UNUSED,
+    char **argv _X_UNUSED)
 {
     /* allow bogus stuff */
     die (0);

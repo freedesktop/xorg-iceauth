@@ -36,7 +36,7 @@ XORG_MACROS_VERSION(1.8)
 XORG_DEFAULT_OPTIONS
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(ICEAUTH, [xproto >= 7.0.17 ice])
+PKG_CHECK_MODULES(ICEAUTH, [xproto >= 7.0.22 ice])
 
 XORG_WITH_LINT
 
