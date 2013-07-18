@@ -48,7 +48,7 @@ typedef struct _AuthList {		/* linked list of entries */
 #define add_to_list(h,t,e) {if (t) (t)->next = (e); else (h) = (e); (t) = (e);}
 
 typedef int (*ProcessFunc)(const char *, int, int, char **);
-typedef int (*DoFunc)(const char *, int, IceAuthFileEntry *, char *);
+typedef int (*DoFunc)(const char *, int, IceAuthFileEntry *, void *);
 
 typedef struct _CommandTable {		/* commands that are understood */
     char *name;				/* full name */
@@ -94,12 +94,12 @@ static void catchsig ( int sig ) _X_NORETURN;
 static void register_signals ( void );
 static int write_auth_file ( char *tmp_nam, size_t tmp_nam_len );
 static void fprintfhex ( FILE *fp, unsigned int len, const char *cp );
-static int dump_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, char *data );
-static int extract_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, char *data );
+static int dump_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, void *data );
+static int extract_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, void *data );
 static int match_auth ( IceAuthFileEntry *a, IceAuthFileEntry *b, int *authDataSame );
 static int merge_entries ( AuthList **firstp, AuthList *second, int *nnewp, int *nreplp, int *ndupp );
-static int search_and_do ( const char *inputfilename, int lineno, int start, int argc, char *argv[], DoFunc do_func, char *data );
-static int remove_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, char *data );
+static int search_and_do ( const char *inputfilename, int lineno, int start, int argc, char *argv[], DoFunc do_func, void *data );
+static int remove_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, void *data );
 static int do_help ( const char *inputfilename, int lineno, int argc, char **argv );
 static int do_questionmark ( const char *inputfilename, int lineno, int argc, char **argv );
 static int do_list ( const char *inputfilename, int lineno, int argc, char **argv );
@@ -749,7 +749,7 @@ static int dump_entry (
     const char *inputfilename _X_UNUSED,
     int lineno _X_UNUSED,
     IceAuthFileEntry *auth,
-    char *data)
+    void *data)
 {
     struct _list_data *ld = (struct _list_data *) data;
     FILE *fp = ld->fp;
@@ -782,7 +782,7 @@ static int extract_entry (
     const char *inputfilename,
     int lineno,
     IceAuthFileEntry *auth,
-    char *data)
+    void *data)
 {
     struct _extract_data *ed = (struct _extract_data *) data;
 
@@ -921,7 +921,7 @@ static int search_and_do (
     int argc,
     char *argv[],
     DoFunc do_func,
-    char *data)
+    void *data)
 {
     int i;
     int status = 0;
@@ -983,7 +983,7 @@ static int remove_entry (
     const char *inputfilename _X_UNUSED,
     int lineno _X_UNUSED,
     IceAuthFileEntry *auth,
-    char *data)
+    void *data)
 {
     int *nremovedp = (int *) data;
     AuthList **listp = &iceauth_head;
@@ -1122,7 +1122,7 @@ static int do_list (
 
 	if (iceauth_head) {
 	    for (l = iceauth_head; l; l = l->next) {
-		dump_entry (inputfilename, lineno, l->auth, (char *) &ld);
+		dump_entry (inputfilename, lineno, l->auth, &ld);
 	    }
 	}
 	return 0;
@@ -1130,7 +1130,7 @@ static int do_list (
     else
     {
 	return (search_and_do (inputfilename, lineno, 1, argc, argv,
-	    dump_entry, (char *) &ld));
+	    dump_entry, &ld));
     }
 }
 
@@ -1222,7 +1222,7 @@ static int do_extract (
     ed.cmd = argv[0];
 
     errors = search_and_do (inputfilename, lineno, 2, argc, argv, 
-	extract_entry, (char *) &ed);
+	extract_entry, &ed);
 
     if (!ed.fp) {
 	fprintf (stderr, 
@@ -1443,7 +1443,7 @@ static int do_remove (
     }
 
     errors = search_and_do (inputfilename, lineno, 1, argc, argv,
-	remove_entry, (char *) &nremoved);
+	remove_entry, &nremoved);
     if (verbose) printf ("%d entries removed\n", nremoved);
     return errors;
 }
