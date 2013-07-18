@@ -52,8 +52,8 @@ typedef int (*DoFunc)(const char *, int, IceAuthFileEntry *, char *);
 
 typedef struct _CommandTable {		/* commands that are understood */
     char *name;				/* full name */
-    int minlen;				/* unique prefix */
-    int maxlen;				/* strlen(name) */
+    unsigned int minlen;		/* unique prefix */
+    unsigned int maxlen;		/* strlen(name) */
     ProcessFunc processfunc;		/* handler */
     char *helptext;			/* what to print for help */
 } CommandTable;
@@ -386,8 +386,8 @@ static int cvthexkey (	/* turn hex key string into octets */
     char *hexstr,
     char **ptrp)
 {
-    int i;
-    int len = 0;
+    unsigned int i;
+    unsigned int len = 0;
     char *retval, *s;
     unsigned char *us;
     char c;
@@ -431,7 +431,7 @@ static int cvthexkey (	/* turn hex key string into octets */
 	}
     }
     *ptrp = retval;
-    return len;
+    return (int) len;
 }
 
 static int dispatch_command (
@@ -444,7 +444,7 @@ static int dispatch_command (
 {
     const CommandTable *ct;
     char *cmd;
-    int n;
+    size_t n;
 					/* scan table for command */
     cmd = argv[0];
     n = strlen (cmd);
@@ -1023,7 +1023,7 @@ int print_help (
 	    n++;
 	}
     } else {
-	int len = strlen (cmd);
+	size_t len = strlen (cmd);
 	for (ct = command_table; ct->name; ct++) {
 	    if (strncmp (cmd, ct->name, len) == 0) {
 		fprintf (fp, "%s\n\n", ct->helptext);
@@ -1076,9 +1076,9 @@ static int do_questionmark (
     char **argv)
 {
     const CommandTable *ct;
-    int i;
+    unsigned int i;
 #define WIDEST_COLUMN 72
-    int col = WIDEST_COLUMN;
+    unsigned int col = WIDEST_COLUMN;
 
     printf ("Commands:\n");
     for (ct = command_table; ct->name; ct++) {
@@ -1527,7 +1527,7 @@ static int do_source (
     char buf[BUFSIZ];
     FILE *fp;
     Bool used_stdin = False;
-    int len;
+    size_t len;
     int errors = 0, status;
     int sublineno = 0;
     char **subargv;
