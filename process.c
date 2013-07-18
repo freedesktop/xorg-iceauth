@@ -51,19 +51,19 @@ typedef int (*ProcessFunc)(const char *, int, int, char **);
 typedef int (*DoFunc)(const char *, int, IceAuthFileEntry *, void *);
 
 typedef struct _CommandTable {		/* commands that are understood */
-    char *name;				/* full name */
+    const char *name;			/* full name */
     unsigned int minlen;		/* unique prefix */
     unsigned int maxlen;		/* strlen(name) */
     ProcessFunc processfunc;		/* handler */
-    char *helptext;			/* what to print for help */
+    const char *helptext;		/* what to print for help */
 } CommandTable;
 
 struct _extract_data {			/* for iterating */
     FILE *fp;				/* input source */
-    char *filename;			/* name of input */
+    const char *filename;		/* name of input */
     Bool used_stdout;			/* whether or not need to close */
     int nwritten;			/* number of entries written */
-    char *cmd;				/* for error messages */
+    const char *cmd;			/* for error messages */
 };
 
 struct _list_data {			/* for iterating */
@@ -74,8 +74,8 @@ struct _list_data {			/* for iterating */
 /*
  * private data
  */
-static char *stdin_filename = "(stdin)";  /* for messages */
-static char *stdout_filename = "(stdout)";  /* for messages */
+static const char *stdin_filename = "(stdin)";  /* for messages */
+static const char *stdout_filename = "(stdout)";  /* for messages */
 static const char *Yes = "yes";		/* for messages */
 static const char *No = "no";			/* for messages */
 
@@ -85,9 +85,9 @@ static void badcommandline ( const char *cmd );
 static char *skip_space ( char *s );
 static char *skip_nonspace ( char *s );
 static char **split_into_words ( char *src, int *argcp );
-static FILE *open_file ( char **filenamep, const char *mode, Bool *usedstdp, const char *srcfn, int srcln, const char *cmd );
+static FILE *open_file ( const char **filenamep, const char *mode, Bool *usedstdp, const char *srcfn, int srcln, const char *cmd );
 static int read_auth_entries ( FILE *fp, AuthList **headp, AuthList **tailp );
-static int cvthexkey ( char *hexstr, char **ptrp );
+static int cvthexkey ( const char *hexstr, char **ptrp );
 static int dispatch_command ( const char *inputfilename, int lineno, int argc, char **argv, const CommandTable *tab, int *statusp );
 static void die ( int sig ) _X_NORETURN;
 static void catchsig ( int sig ) _X_NORETURN;
@@ -313,7 +313,7 @@ static char **split_into_words (  /* argvify string */
 
 
 static FILE *open_file (
-    char **filenamep,
+    const char **filenamep,
     const char *mode,
     Bool *usedstdp,
     const char *srcfn,
@@ -383,12 +383,13 @@ static int read_auth_entries (FILE *fp, AuthList **headp, AuthList **tailp)
 
 
 static int cvthexkey (	/* turn hex key string into octets */
-    char *hexstr,
+    const char *hexstr,
     char **ptrp)
 {
     unsigned int i;
     unsigned int len = 0;
-    char *retval, *s;
+    char *retval;
+    const char *s;
     unsigned char *us;
     char c;
     char savec = '\0';
@@ -443,7 +444,7 @@ static int dispatch_command (
     int *statusp)
 {
     const CommandTable *ct;
-    char *cmd;
+    const char *cmd;
     size_t n;
 					/* scan table for command */
     cmd = argv[0];
@@ -554,7 +555,7 @@ int auth_initialize ( char *authfilename )
 			 ICEAUTH_DEFAULT_TIMEOUT, 
 			 (break_locks ? 0L : ICEAUTH_DEFAULT_DEADTIME));
 	if (n != IceAuthLockSuccess) {
-	    char *reason = "unknown error";
+	    const char *reason = "unknown error";
 	    switch (n) {
 	      case IceAuthLockError:
 		reason = "error";
@@ -1157,7 +1158,7 @@ static int do_merge (
     listhead = listtail = NULL;
 
     for (i = 1; i < argc; i++) {
-	char *filename = argv[i];
+	const char *filename = argv[i];
 	FILE *fp;
 	Bool used_stdin = False;
 
@@ -1523,7 +1524,7 @@ static int do_source (
     int argc,
     char **argv)
 {
-    char *script;
+    const char *script;
     char buf[BUFSIZ];
     FILE *fp;
     Bool used_stdin = False;

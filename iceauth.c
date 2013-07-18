@@ -93,10 +93,10 @@ main (int argc, char *argv[])
     ProgramName = argv[0];
 
     for (i = 1; i < argc; i++) {
-	char *arg = argv[i];
+	const char *arg = argv[i];
 
 	if (arg[0] == '-') {
-	    char *flag;
+	    const char *flag;
 
 	    for (flag = (arg + 1); *flag; flag++) {
 		switch (*flag) {
