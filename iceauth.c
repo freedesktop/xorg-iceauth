@@ -63,6 +63,7 @@ usage (void)
 "    -q                             turn off extra messages\n"
 "    -i                             ignore locks on authority file\n"
 "    -b                             break locks on authority file\n"
+"    -V                             print version and exit\n"
 "\n"
 "and commands have the following syntax:\n";
     static const char suffixmsg[] = 
@@ -104,6 +105,9 @@ main (int argc, char *argv[])
 		    if (++i >= argc) usage ();
 		    authfilename = argv[i];
 		    continue;
+		  case 'V':		/* -V */
+		    printf("%s\n", PACKAGE_STRING);
+		    exit(0);
 		  case 'v':		/* -v */
 		    verbose = 1;
 		    continue;
