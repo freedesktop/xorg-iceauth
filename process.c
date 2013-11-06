@@ -1060,7 +1060,7 @@ static int do_help (
     if (n == 0) {
 	prefix (inputfilename, lineno);
 	/* already know that cmd is set in this case */
-	fprintf (stderr, "no help for noexistent command \"%s\"\n", cmd);
+	fprintf (stderr, "no help for nonexistent command \"%s\"\n", cmd);
     }
 
     return 0;
