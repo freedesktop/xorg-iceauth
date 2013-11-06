@@ -71,8 +71,8 @@ usage (void)
 
     fprintf (stderr, "usage:  %s [-options ...] [command arg ...]\n",
 	     ProgramName);
-    fprintf (stderr, "%s\n", prefixmsg);
-    print_help (stderr, "    ");	/* match prefix indentation */
+    fprintf (stderr, "%s", prefixmsg);
+    print_help (stderr, NULL);
     fprintf (stderr, "\n%s\n", suffixmsg);
     exit (1);
 }
