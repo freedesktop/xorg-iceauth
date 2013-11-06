@@ -53,7 +53,7 @@ static const char *defsource = "(stdin)";
  * utility routines
  */
 static void _X_NORETURN
-usage (void)
+usage (int exitcode)
 {
     static const char prefixmsg[] = 
 "\n"
@@ -75,7 +75,7 @@ usage (void)
     fprintf (stderr, "%s", prefixmsg);
     print_help (stderr, NULL);
     fprintf (stderr, "\n%s\n", suffixmsg);
-    exit (1);
+    exit (exitcode);
 }
 
 
@@ -102,7 +102,11 @@ main (int argc, char *argv[])
 	    for (flag = (arg + 1); *flag; flag++) {
 		switch (*flag) {
 		  case 'f':		/* -f authfilename */
-		    if (++i >= argc) usage ();
+		    if (++i >= argc) {
+			fprintf(stderr, "%s: -f requires an argument\n",
+				ProgramName);
+			usage (1);
+		    }
 		    authfilename = argv[i];
 		    continue;
 		  case 'V':		/* -V */
@@ -120,8 +124,12 @@ main (int argc, char *argv[])
 		  case 'i':		/* -i */
 		    ignore_locks = True;
 		    continue;
+		  case 'u':		/* -u */
+		    usage (0);
 		  default:
-		    usage ();
+		    fprintf(stderr, "%s: unrecognized option '%s'\n",
+			    ProgramName, flag);
+		    usage (1);
 		}
 	    }
 	} else {
