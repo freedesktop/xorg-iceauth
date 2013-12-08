@@ -298,9 +298,13 @@ static char **split_into_words (  /* argvify string */
 	savec = *src;
 	*src = '\0';
 	if (cur == total) {
+	    char **prevargv = argv;
 	    total += WORDSTOALLOC;
 	    argv = (char **) realloc (argv, total * sizeof (char *));
-	    if (!argv) return NULL;
+	    if (!argv) {
+		free (prevargv);
+		return NULL;
+	    }
 	}
 	argv[cur++] = jword;
 	if (savec) src++;		/* if not last on line advance */
