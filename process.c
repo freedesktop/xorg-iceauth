@@ -47,7 +47,7 @@ typedef struct _AuthList {		/* linked list of entries */
 
 #define add_to_list(h,t,e) {if (t) (t)->next = (e); else (h) = (e); (t) = (e);}
 
-typedef int (*ProcessFunc)(const char *, int, int, char **);
+typedef int (*ProcessFunc)(const char *, int, int, const char **);
 typedef int (*DoFunc)(const char *, int, IceAuthFileEntry *, void *);
 
 typedef struct _CommandTable {		/* commands that are understood */
@@ -88,7 +88,7 @@ static char **split_into_words ( char *src, int *argcp );
 static FILE *open_file ( const char **filenamep, const char *mode, Bool *usedstdp, const char *srcfn, int srcln, const char *cmd );
 static int read_auth_entries ( FILE *fp, AuthList **headp, AuthList **tailp );
 static int cvthexkey ( const char *hexstr, char **ptrp );
-static int dispatch_command ( const char *inputfilename, int lineno, int argc, char **argv, const CommandTable *tab, int *statusp );
+static int dispatch_command ( const char *inputfilename, int lineno, int argc, const char **argv, const CommandTable *tab, int *statusp );
 static void die ( int sig ) _X_NORETURN;
 static void catchsig ( int sig ) _X_NORETURN;
 static void register_signals ( void );
@@ -98,19 +98,19 @@ static int dump_entry ( const char *inputfilename, int lineno, IceAuthFileEntry 
 static int extract_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, void *data );
 static int match_auth ( IceAuthFileEntry *a, IceAuthFileEntry *b, int *authDataSame );
 static int merge_entries ( AuthList **firstp, AuthList *second, int *nnewp, int *nreplp, int *ndupp );
-static int search_and_do ( const char *inputfilename, int lineno, int start, int argc, char *argv[], DoFunc do_func, void *data );
+static int search_and_do ( const char *inputfilename, int lineno, int start, int argc, const char *argv[], DoFunc do_func, void *data );
 static int remove_entry ( const char *inputfilename, int lineno, IceAuthFileEntry *auth, void *data );
-static int do_help ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_questionmark ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_list ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_merge ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_extract ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_add ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_remove ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_info ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_exit ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_quit ( const char *inputfilename, int lineno, int argc, char **argv );
-static int do_source ( const char *inputfilename, int lineno, int argc, char **argv );
+static int do_help ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_questionmark ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_list ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_merge ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_extract ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_add ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_remove ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_info ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_exit ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_quit ( const char *inputfilename, int lineno, int argc, const char **argv );
+static int do_source ( const char *inputfilename, int lineno, int argc, const char **argv );
 
 static const CommandTable command_table[] = {	/* table of known commands */
 { "add", 2, 3, do_add,
@@ -443,7 +443,7 @@ static int dispatch_command (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv,
+    const char **argv,
     const CommandTable *tab,
     int *statusp)
 {
@@ -714,7 +714,7 @@ int process_command (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     int status;
 
@@ -924,7 +924,7 @@ static int search_and_do (
     int lineno,
     int start,
     int argc,
-    char *argv[],
+    const char *argv[],
     DoFunc do_func,
     void *data)
 {
@@ -932,7 +932,7 @@ static int search_and_do (
     int status = 0;
     int errors = 0;
     AuthList *l, *next;
-    char *protoname, *protodata, *netid, *authname;
+    const char *protoname, *protodata, *netid, *authname;
 
     for (l = iceauth_head; l; l = next)
     {
@@ -1044,9 +1044,9 @@ static int do_help (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
-    char *cmd = (argc > 1 ? argv[1] : NULL);
+    const char *cmd = (argc > 1 ? argv[1] : NULL);
     int n;
 
     n = print_help (stdout, cmd);
@@ -1078,7 +1078,7 @@ static int do_questionmark (
     const char *inputfilename _X_UNUSED,
     int lineno _X_UNUSED,
     int argc _X_UNUSED,
-    char **argv _X_UNUSED)
+    const char **argv _X_UNUSED)
 {
     const CommandTable *ct;
     unsigned int i;
@@ -1116,7 +1116,7 @@ static int do_list (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     struct _list_data ld;
 
@@ -1146,7 +1146,7 @@ static int do_merge (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     int i;
     int errors = 0;
@@ -1210,7 +1210,7 @@ static int do_extract (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     int errors;
     struct _extract_data ed;
@@ -1254,15 +1254,15 @@ static int do_add (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 { 
     int n, nnew, nrepl, ndup;
-    char *protoname;
-    char *protodata_hex;
+    const char *protoname;
+    const char *protodata_hex;
     char *protodata = NULL; /* not required */
-    char *netid;
-    char *authname;
-    char *authdata_hex;
+    const char *netid;
+    const char *authname;
+    const char *authdata_hex;
     char *authdata = NULL;
     int protodata_len, authdata_len;
     IceAuthFileEntry *auth = NULL;
@@ -1436,7 +1436,7 @@ static int do_remove (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     int nremoved = 0;
     int errors;
@@ -1460,7 +1460,7 @@ static int do_info (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     int n;
     AuthList *l;
@@ -1495,7 +1495,7 @@ static int do_exit (
     const char *inputfilename _X_UNUSED,
     int lineno _X_UNUSED,
     int argc _X_UNUSED,
-    char **argv _X_UNUSED)
+    const char **argv _X_UNUSED)
 {
     /* allow bogus stuff */
     alldone = True;
@@ -1510,7 +1510,7 @@ static int do_quit (
     const char *inputfilename _X_UNUSED,
     int lineno _X_UNUSED,
     int argc _X_UNUSED,
-    char **argv _X_UNUSED)
+    const char **argv _X_UNUSED)
 {
     /* allow bogus stuff */
     die (0);
@@ -1526,7 +1526,7 @@ static int do_source (
     const char *inputfilename,
     int lineno,
     int argc,
-    char **argv)
+    const char **argv)
 {
     const char *script;
     char buf[BUFSIZ];
@@ -1573,7 +1573,8 @@ static int do_source (
 	buf[--len] = '\0';		/* remove new line */
 	subargv = split_into_words (buf, &subargc);
 	if (subargv) {
-	    status = process_command (script, sublineno, subargc, subargv);
+	    status = process_command (script, sublineno, subargc,
+                                      (const char **) subargv);
 	    free ((char *) subargv);
 	    errors += status;
 	} else {

@@ -44,7 +44,7 @@ Bool break_locks = False;		/* for error recovery */
  */
 
 static char *authfilename = NULL;	/* filename of cookie file */
-static char *defcmds[] = { "source", "-", NULL };  /* default command */
+static const char *defcmds[] = { "source", "-", NULL };  /* default command */
 static int ndefcmds = 2;
 static const char *defsource = "(stdin)";
 
@@ -87,7 +87,7 @@ main (int argc, char *argv[])
 {
     int i;
     const char *sourcename = defsource;
-    char **arglist = defcmds;
+    const char **arglist = defcmds;
     int nargs = ndefcmds;
     int status;
 
@@ -135,7 +135,7 @@ main (int argc, char *argv[])
 	} else {
 	    sourcename = "(argv)";
 	    nargs = argc - i;
-	    arglist = argv + i;
+	    arglist = (const char **) argv + i;
 	    if (verbose == -1) verbose = 0;
 	    break;
 	}
